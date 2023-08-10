@@ -1,5 +1,6 @@
 from processing import *
-
+from triangulation import *
+from visalization import *
 """
 TODO
 
@@ -30,10 +31,9 @@ TODOLIST
 """
 
 if __name__ == "__main__":
-    processing('csi_0_01.dat')
-    processing('csi_0_02.dat')
-    processing('csi_0_03.dat')
-    processing('csi_0_10.dat')
-    processing('csi_0_100.dat')
+    #고정 좌표 A, B, C
+    A = (0, 0, 0)
+    B = (4, 0, 0)
+    C = (2,math.sqrt(12), 0)
 
-
+    visalization(A,B,C)

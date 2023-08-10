@@ -30,5 +30,8 @@ def processing(file_path):
     plt.grid(True)
     plt.legend()
     plt.show()
+    distance = round(distance, 2)
 
-    print("distance: ", round(distance, 2))
+    print("distance: ", distance)
+
+    return distance
