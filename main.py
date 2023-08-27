@@ -1,6 +1,10 @@
+import os
+
 from processing import *
 from triangulation import *
 from visalization import *
+from train import *
+
 """
 TODO
 
@@ -31,9 +35,33 @@ TODOLIST
 """
 
 if __name__ == "__main__":
+
+    delta, n, model = main_training(make_list())
+    distance_list = []
+    csieff_list = []
+
+
+    for z in range(1, 4):
+        for t in range(1, 6):
+            for j in range(1, 6):
+                for i in range(1,7):
+                    if not os.path.exists('user4-1-' + str(z) + '-' + str(t) + '-' + str(j) + '-r' + str(i) + '.dat'):
+                        #print(f"Warning: {'user4-1-1-' + str(t) + '-' + str(j) + '-r' + str(i) + '.dat'} does not exist. Skipping...")
+                        continue
+                    distance, csieff = processing('user4-1-' + str(z) + '-' + str(t) + '-' + str(j) + '-r' + str(i) + '.dat', delta, n)
+                    distance_list.append(distance)
+                    csieff_list.append(csieff)
+    print("distance :", distance_list)
+    print("CSIEFF :", csieff_list)
+    plt.plot(distance_list, csieff_list, label='CSIEFF VS DISTANCE', color='red', linestyle='--')
+    plt.xlabel('Distance')
+    plt.ylabel('CSIeff Amplitude')
+    plt.title('CSIEFF VS DISTANCE')
+    plt.grid(True)
+    plt.show()
     #고정 좌표 A, B, C
     A = (0, 0, 0)
     B = (4, 0, 0)
     C = (2,math.sqrt(12), 0)
 
-    visalization(A,B,C)
+    #visalization(A,B,C)

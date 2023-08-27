@@ -7,6 +7,7 @@ def visalization(A, B, C):
     distance1 = processing('csi_0_01.dat')
     distance2 = processing('csi_0_02.dat')
     distance3 = processing('csi_0_03.dat')
+
     D = cal_coordinate(A,B,C, distance1, distance2, distance3)
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
