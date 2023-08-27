@@ -3,8 +3,6 @@ import warnings
 import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.metrics import mean_squared_error
-from cal_csi_eff import calculate_CSIEff
 from calibration_distance import calculate_distance
 from get_freq_domain import get_freq_domain
 from get_time_domain import get_time_domain
@@ -34,9 +32,8 @@ class DistanceEstimator:
         return self.model.predict(X)
 
 def main_training(file_list):
-    initial_delta = 1  # 임의의 값으로 초기화
-    initial_n = 2  # 임의의 값으로 초기화
-    threshold = 0.01  # 오차 허용 범위 (변경 가능)
+    initial_delta = 1
+    initial_n = 2
     csi_eff_values = []
     distance_values = []
     for file_path in file_list:
@@ -45,7 +42,6 @@ def main_training(file_list):
         warnings.simplefilter("ignore", np.ComplexWarning)
         csi_eff_values.append(csi_eff)
         distance_values.append(calculate_distance(c=3e8, f0=2.45e9, CSIeff=csi_eff, sigma=initial_delta, n=initial_n))
-    # 입력 데이터 X 및 목표 변수 y 생성
     X = np.array(csi_eff_values).reshape(-1, 1)
     y = np.array(distance_values)
 
@@ -54,14 +50,11 @@ def main_training(file_list):
         'n': np.arange(4, 5, 0.1)
     }
 
-    # 그리드 서치 설정
     estimator = DistanceEstimator()
     grid_search = GridSearchCV(estimator, param_grid, cv=416, scoring='neg_mean_squared_error')  # cv는 교차 검증 횟수입니다.
 
-    # 모델 학습
     grid_search.fit(X, y)
 
-    # 최적의 파라미터를 얻음
     best_params = grid_search.best_params_
     best_estimator = grid_search.best_estimator_
     print("Training complete with δ:", best_params['delta'], "and n:", best_params['n'])
